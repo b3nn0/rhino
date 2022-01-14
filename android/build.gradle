@@ -1,0 +1,129 @@
+// To use this, install the Android SDK and run 
+// $ANDROID_HOME/tools/bin/sdkmanager --licenses
+// to accept licenses
+
+buildscript {
+    repositories {
+        // Gradle 4.1 and higher include support for Google's Maven repo using
+        // the google() method. And you need to include this repo to download
+        // Android Gradle plugin 3.0.0 or higher.
+        google()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.0.0'
+    }
+}
+
+plugins {
+    id 'idea'
+    id 'eclipse'
+    id 'maven-publish'
+    id 'signing'
+    id 'jacoco'
+    id 'distribution'
+    id 'checkstyle'
+    id 'com.diffplug.spotless' version "5.12.1"
+    id 'com.github.spotbugs' version "4.7.1"
+    id 'com.quittle.setup-android-sdk' version '2.1.0'
+
+}
+
+apply plugin: 'com.android.application'
+
+
+repositories {
+    mavenCentral()
+    google()
+}
+
+android {
+    compileSdkVersion 31
+    buildToolsVersion '30.0.3'
+
+    defaultConfig {
+        applicationId "org.mozilla.javascript"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    sourceSets {
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+
+            java {
+                srcDirs '../src', '../toolsrc', '../xmlimplsrc'
+                exclude 'org/mozilla/javascript/engine/**'
+                exclude 'org/mozilla/javascript/tools/debugger/**'
+                exclude 'org/mozilla/javascript/tools/shell/ConsoleTextArea.java'
+                exclude 'org/mozilla/javascript/tools/shell/JSConsole.java'
+            }
+            resources {
+                srcDirs '../src', '../toolsrc'
+                exclude "build.xml"
+                exclude "manifest"
+            }
+        }
+
+        test {
+            java {
+                srcDirs "../testsrc", '../examples'
+                exclude "tests/**"
+                exclude "org/mozilla/javascript/tests/scriptengine/**"
+                exclude "org/mozilla/javascript/tests/scriptengine/BuiltinsTest.java"
+                exclude "org/mozilla/javascript/tests/SecurityControllerTest.java"
+                exclude "org/mozilla/javascript/tests/SealedSharedScopeTest.java"
+            }
+            resources {
+                srcDirs "../testsrc"
+            }
+        }
+    }
+
+}
+
+dependencies {
+    testImplementation "junit:junit:4.13.2"
+    testImplementation "org.yaml:snakeyaml:1.28"
+    testImplementation "javax.xml.soap:javax.xml.soap-api:1.4.0"
+}
+
+
+
+// test {
+//     useJUnit()
+//     exclude "**/benchmarks/**"
+
+//     jvmArgs += '-Xss1280k'
+
+//     if (JavaVersion.current() > JavaVersion.VERSION_1_8) {
+//         jvmArgs += ['--add-opens', 'java.desktop/javax.swing.table=ALL-UNNAMED']
+//     }
+
+//     jacoco.excludes = ['**/testsrc_tests_ecma_3_RegExp_perlstress*']
+
+//     systemProperty 'java.awt.headless', 'true'
+//     systemProperty 'mozilla.js.tests', 'testsrc/tests'
+//     systemProperty 'mozilla.js.tests.timeout', 60000
+//     systemProperty 'user.language', 'en'
+//     systemProperty 'user.country', 'US'
+//     systemProperty 'user.timezone', 'America/Los_Angeles'
+//     systemProperty 'file.encoding', 'UTF-8'
+//     if (System.getProperty('quick') != null) {
+//         systemProperty 'TEST_OPTLEVEL', -1
+//     } else if (System.getProperty('optLevel')) {
+//         systemProperty 'TEST_OPTLEVEL', System.getProperty('optLevel')
+//     }
+//     systemProperty 'test262properties', System.getProperty('test262properties')
+//     if (System.getProperty('updateTest262properties') != null) {
+//         systemProperty 'updateTest262properties', System.getProperty('updateTest262properties')
+//     }
+//     maxHeapSize = "1g"
+//     testLogging.showStandardStreams = true
+//     // Many tests do not clean up contexts properly. This makes the tests much
+//     // more resilient at the expense of performance.
+//     forkEvery = 1
+//     maxParallelForks = 64
+// }
+
