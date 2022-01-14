@@ -6,11 +6,11 @@
 
 package org.mozilla.javascript;
 
-import java.beans.BeanDescriptor;
-import java.beans.BeanInfo;
-import java.beans.IntrospectionException;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
+//import java.beans.BeanDescriptor;
+//import java.beans.BeanInfo;
+//import java.beans.IntrospectionException;
+//import java.beans.Introspector;
+//import java.beans.PropertyDescriptor;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.function.UnaryOperator;
@@ -57,6 +57,8 @@ public class JavaToJSONConverters {
      */
     public static final UnaryOperator<Object> BEAN =
             value -> {
+                return null;
+                /*
                 BeanInfo beanInfo;
                 try {
                     beanInfo = Introspector.getBeanInfo(value.getClass(), Object.class);
@@ -81,6 +83,6 @@ public class JavaToJSONConverters {
                 BeanDescriptor beanDescriptor = beanInfo.getBeanDescriptor();
                 obj.put("beanClass", beanDescriptor.getBeanClass().getName());
                 obj.put("properties", properties);
-                return obj;
+                return obj;*/
             };
 }

@@ -113,13 +113,13 @@ class XmlProcessor implements Serializable {
         // These next parameters make extra-sure that we have a secure configuration,
         // but are not supported on all implementations.
         try {
-            xform.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+            //xform.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
         } catch (IllegalArgumentException e) {
             // Ignore this, because it will not work on all implementations
         }
 
         try {
-            xform.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
+            //xform.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
         } catch (IllegalArgumentException e) {
             // Ignore this, because it will not work on all implementations
         }
