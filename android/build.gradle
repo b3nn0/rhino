@@ -6,7 +6,7 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.0'
+        classpath 'com.android.tools.build:gradle:7.0.4'
     }
 }
 
@@ -32,12 +32,14 @@ repositories {
     google()
 }
 
+
 android {
     compileSdkVersion 31
     buildToolsVersion '30.0.3'
 
     defaultConfig {
         applicationId "org.mozilla.javascript"
+        minSdkVersion 31
     }
 
     compileOptions {
@@ -77,7 +79,27 @@ android {
         }
     }
 
+    testOptions {
+        unitTests.all {
+            systemProperty 'mozilla.js.tests', 'testsrc/tests'
+            systemProperty 'mozilla.js.tests.timeout', 60000
+            systemProperty 'user.language', 'en'
+            systemProperty 'user.country', 'US'
+            systemProperty 'user.timezone', 'America/Los_Angeles'
+            systemProperty 'file.encoding', 'UTF-8'
+            systemProperty 'TEST_OPTLEVEL', -1
+            maxHeapSize = "1g"
+            testLogging.showStandardStreams = true
+            // Many tests do not clean up contexts properly. This makes the tests much
+            // more resilient at the expense of performance.
+            forkEvery = 1
+            maxParallelForks = 64
+            workingDir '..'
+        }
+    }
+
 }
+
 
 dependencies {
     testImplementation "junit:junit:4.13.2"
